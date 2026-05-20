@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JSL Tech - Inteligência Artificial que gera resultados reais para pequenas e médias empresas. Automação, redução de custos e mais produtividade.">
+    <meta property="og:title" content="JSL Tech | Inteligência. Soluções. Resultados.">
+    <meta property="og:description" content="Transformamos IA em resultados reais para o seu negócio.">
+    <title>JSL Tech | Inteligência. Soluções. Resultados.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- Particles Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <img src="assets/images/logo-dark.png" alt="JSL Tech" class="logo-img" width="120">
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                <li><a href="#servicos" class="nav-link">Serviços</a></li>
+                <li><a href="#beneficios" class="nav-link">Benefícios</a></li>
+                <li><a href="#contato" class="nav-link">Contato</a></li>
+            </ul>
+            <a href="#contato" class="btn-nav">Fale Conosco</a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="home">
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-badge animate-in" style="--delay:0.1s">
+                    <span class="badge-dot"></span>
+                    <span>IA que transforma negócios</span>
+                </div>
+                <h1 class="hero-title animate-in" style="--delay:0.2s">
+                    <span class="title-line">Inteligência</span>
+                    <span class="title-line title-gradient">Artificial</span>
+                    <span class="title-line">que Gera</span>
+                    <span class="title-line title-gradient">Resultados</span>
+                </h1>
+                <p class="hero-subtitle animate-in" style="--delay:0.4s">
+                    A tecnologia sozinha não transforma negócios.<br>
+                    <strong>O que transforma é a forma como ela é aplicada.</strong>
+                </p>
+                <div class="hero-cta animate-in" style="--delay:0.55s">
+                    <a href="#contato" class="btn-primary">
+                        <span>Fale Conosco</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#servicos" class="btn-secondary">
+                        <span>Ver Soluções</span>
+                    </a>
+                </div>
+                <div class="hero-stats animate-in" style="--delay:0.7s">
+                    <div class="stat">
+                        <div class="stat-value">
+                            <span class="stat-number" data-target="95">0</span><span class="stat-suffix">%</span>
+                        </div>
+                        <span class="stat-label">Redução de tarefas manuais</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-value">
+                            <span class="stat-number" data-target="3">0</span><span class="stat-suffix">x</span>
+                        </div>
+                        <span class="stat-label">Mais produtividade</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-value">
+                            <span class="stat-number" data-target="100">0</span><span class="stat-suffix">+</span>
+                        </div>
+                        <span class="stat-label">Empresas atendidas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual animate-in" style="--delay:0.3s">
+                <div class="orb-scene" id="orb-scene">
+                    <div class="orb-ring ring-1"><span class="ring-dot"></span></div>
+                    <div class="orb-ring ring-2"><span class="ring-dot"></span></div>
+                    <div class="orb-ring ring-3"><span class="ring-dot"></span></div>
+                    <div class="orb-core">
+                        <span class="orb-label">IA</span>
+                        <div class="orb-glow"></div>
+                    </div>
+                    <div class="orb-float float-1">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                    </div>
+                    <div class="orb-float float-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                    <div class="orb-float float-3">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <div class="orb-float float-4">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- ==================== TICKER ==================== -->
+    <div class="ticker-wrap" aria-hidden="true">
+        <div class="ticker-track">
+            <div class="ticker-item"><span>Automação Inteligente</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Redução de Custos</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Mais Produtividade</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Decisões com Dados</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Atendimento Inteligente</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Escale seus Resultados</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>IA Aplicada ao Negócio</span><span class="ticker-dot">◆</span></div>
+            <!-- Duplicate for seamless loop -->
+            <div class="ticker-item"><span>Automação Inteligente</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Redução de Custos</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Mais Produtividade</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Decisões com Dados</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Atendimento Inteligente</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>Escale seus Resultados</span><span class="ticker-dot">◆</span></div>
+            <div class="ticker-item"><span>IA Aplicada ao Negócio</span><span class="ticker-dot">◆</span></div>
+        </div>
+    </div>
+
+    <!-- ==================== SOBRE ==================== -->
+    <section class="about" id="sobre">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content reveal">
+                    <div class="section-tag">Sobre a JSL Tech</div>
+                    <h2 class="section-title">
+                        Transformamos tecnologia em <span class="text-gradient">resultado real</span>
+                    </h2>
+                    <p class="section-text">
+                        Na JSL Tech, usamos IA para automatizar processos, reduzir desperdícios e ajudar pequenas e médias empresas a crescerem com mais estratégia.
+                    </p>
+                    <p class="section-text">
+                        Não vendemos apenas tecnologia. Entregamos <strong>inteligência aplicada</strong> à sua realidade, com acompanhamento em cada etapa da jornada.
+                    </p>
+                    <ul class="about-highlights">
+                        <li class="highlight-item">
+                            <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Tecnologia aplicada à sua realidade</span>
+                        </li>
+                        <li class="highlight-item">
+                            <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Acompanhamento em cada etapa</span>
+                        </li>
+                        <li class="highlight-item">
+                            <div class="highlight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>Foco em resultados mensuráveis</span>
+                        </li>
+                    </ul>
+                    <a href="#contato" class="btn-primary">
+                        <span>Começar agora</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                <div class="about-visual reveal" style="--reveal-delay:0.15s">
+                    <div class="card-stack">
+                        <div class="stack-card card-back-2"></div>
+                        <div class="stack-card card-back-1"></div>
+                        <div class="stack-card card-main">
+                            <div class="card-main-header">
+                                <div class="card-pulse-dot"></div>
+                                <span>JSL Tech · Análise em tempo real</span>
+                            </div>
+                            <div class="card-chart">
+                                <div class="chart-bar" style="height:40%; --bar-delay:0s"></div>
+                                <div class="chart-bar" style="height:65%; --bar-delay:0.1s"></div>
+                                <div class="chart-bar" style="height:50%; --bar-delay:0.2s"></div>
+                                <div class="chart-bar" style="height:80%; --bar-delay:0.3s"></div>
+                                <div class="chart-bar" style="height:70%; --bar-delay:0.4s"></div>
+                                <div class="chart-bar highlight" style="height:95%; --bar-delay:0.5s"></div>
+                            </div>
+                            <div class="card-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Produtividade</span>
+                                    <span class="metric-value up">+73%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Custos</span>
+                                    <span class="metric-value down">-42%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Tempo salvo</span>
+                                    <span class="metric-value up">+120h/mês</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SERVIÇOS ==================== -->
+    <section class="services" id="servicos">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">O que fazemos</div>
+                <h2 class="section-title">
+                    Sua empresa pode ir <span class="text-gradient">mais longe com IA</span>
+                </h2>
+                <p class="section-subtitle">Soluções inteligentes que geram impacto real no seu negócio</p>
+            </div>
+
+            <div class="services-grid">
+                <article class="service-card reveal" style="--reveal-delay:0s">
+                    <div class="service-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                    </div>
+                    <h3>Automatize Tarefas</h3>
+                    <p>Elimine processos manuais e ganhe tempo para o que realmente importa no seu negócio.</p>
+                    <span class="service-chip">Automação</span>
+                    <div class="card-shine"></div>
+                </article>
+
+                <article class="service-card reveal" style="--reveal-delay:0.1s">
+                    <div class="service-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h3>Reduza Custos</h3>
+                    <p>Menos desperdício, mais eficiência. Otimize recursos e maximize o retorno sobre investimento.</p>
+                    <span class="service-chip">Eficiência</span>
+                    <div class="card-shine"></div>
+                </article>
+
+                <article class="service-card reveal" style="--reveal-delay:0.2s">
+                    <div class="service-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Melhore o Atendimento</h3>
+                    <p>Respostas mais rápidas, clientes mais satisfeitos. IA que transforma a experiência do cliente.</p>
+                    <span class="service-chip">Atendimento</span>
+                    <div class="card-shine"></div>
+                </article>
+
+                <article class="service-card reveal" style="--reveal-delay:0.3s">
+                    <div class="service-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
+                    <h3>Tome Decisões com Dados</h3>
+                    <p>Mais clareza para decidir com confiança. Dashboards e insights em tempo real para sua gestão.</p>
+                    <span class="service-chip">Analytics</span>
+                    <div class="card-shine"></div>
+                </article>
+
+                <article class="service-card reveal" style="--reveal-delay:0.4s">
+                    <div class="service-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                    <h3>Ganhe Mais Produtividade</h3>
+                    <p>Equipe focada no que realmente importa. Menos tarefas repetitivas, mais impacto estratégico.</p>
+                    <span class="service-chip">Produtividade</span>
+                    <div class="card-shine"></div>
+                </article>
+
+                <article class="service-card service-card--featured reveal" style="--reveal-delay:0.5s">
+                    <div class="featured-badge">Para PMEs</div>
+                    <div class="service-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <h3>Sua empresa não precisa ser grande para ser inteligente</h3>
+                    <p>PMEs já competem em alto nível com IA e automação estratégica. Tecnologia aplicada à sua realidade.</p>
+                    <span class="service-chip">Estratégia</span>
+                    <div class="card-shine"></div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BENEFÍCIOS ==================== -->
+    <section class="benefits" id="beneficios">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-tag">Por que JSL Tech?</div>
+                <h2 class="section-title">
+                    A JSL Tech ajuda sua empresa a <span class="text-gradient">crescer</span>
+                </h2>
+            </div>
+
+            <div class="benefits-list">
+                <div class="benefit-item reveal" style="--reveal-delay:0s">
+                    <div class="benefit-number">01</div>
+                    <div class="benefit-body">
+                        <div class="benefit-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Crescer com Tecnologia</h3>
+                            <p>Use a IA como alavanca de crescimento sustentável para o seu negócio.</p>
+                        </div>
+                        <div class="benefit-progress-wrap">
+                            <div class="benefit-progress-bar">
+                                <div class="benefit-progress-fill" data-width="95"></div>
+                            </div>
+                            <span class="benefit-percent">95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benefit-item reveal" style="--reveal-delay:0.12s">
+                    <div class="benefit-number">02</div>
+                    <div class="benefit-body">
+                        <div class="benefit-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Economizar Tempo</h3>
+                            <p>Automatize processos repetitivos e libere horas preciosas da sua equipe.</p>
+                        </div>
+                        <div class="benefit-progress-wrap">
+                            <div class="benefit-progress-bar">
+                                <div class="benefit-progress-fill" data-width="88"></div>
+                            </div>
+                            <span class="benefit-percent">88%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benefit-item reveal" style="--reveal-delay:0.24s">
+                    <div class="benefit-number">03</div>
+                    <div class="benefit-body">
+                        <div class="benefit-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Aumentar Eficiência</h3>
+                            <p>Reduza erros, elimine gargalos e otimize cada etapa dos seus processos.</p>
+                        </div>
+                        <div class="benefit-progress-wrap">
+                            <div class="benefit-progress-bar">
+                                <div class="benefit-progress-fill" data-width="92"></div>
+                            </div>
+                            <span class="benefit-percent">92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benefit-item reveal" style="--reveal-delay:0.36s">
+                    <div class="benefit-number">04</div>
+                    <div class="benefit-body">
+                        <div class="benefit-icon-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Escalar Resultados</h3>
+                            <p>Cresça sem aumentar proporcionalmente os custos com tecnologia escalável.</p>
+                        </div>
+                        <div class="benefit-progress-wrap">
+                            <div class="benefit-progress-bar">
+                                <div class="benefit-progress-fill" data-width="85"></div>
+                            </div>
+                            <span class="benefit-percent">85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== QUOTE ==================== -->
+    <section class="quote-section">
+        <div class="container">
+            <div class="quote-content reveal">
+                <div class="quote-mark">"</div>
+                <p class="quote-text">
+                    A IA não é o futuro.<br>
+                    <strong>Ela já está mudando empresas hoje.</strong>
+                </p>
+                <div class="quote-divider"></div>
+                <span class="quote-author">JSL Tech &mdash; Inteligência. Soluções. Resultados.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CTA ==================== -->
+    <section class="cta-section" id="contato">
+        <div class="container">
+            <div class="cta-content reveal">
+                <div class="cta-badge">Vamos começar?</div>
+                <h2 class="cta-title">
+                    Vamos preparar sua empresa<br>
+                    para o futuro, <span class="text-gradient">juntos?</span>
+                </h2>
+                <p class="cta-subtitle">
+                    Entre em contato e descubra como a JSL Tech pode transformar seu negócio com inteligência artificial.
+                </p>
+                <div class="cta-actions">
+                    <a href="https://wa.me/5511999999999" class="btn-primary btn-large" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>Fale pelo WhatsApp</span>
+                    </a>
+                    <a href="mailto:contato@jsltech.com.br" class="btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>Enviar e-mail</span>
+                    </a>
+                </div>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Resposta em até 24h</span>
+                    </div>
+                    <div class="cta-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Diagnóstico gratuito</span>
+                    </div>
+                    <div class="cta-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>Sem compromisso</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-dark.png" alt="JSL Tech" class="logo-img" width="140">
+                    </div>
+                    <p>Inteligência. Soluções. Resultados.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                        <a href="https://wa.me/5511999999999" class="social-link" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="#sobre">Sobre</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="#beneficios">Benefícios</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Soluções</h4>
+                    <ul>
+                        <li><a href="#servicos">Automação de Processos</a></li>
+                        <li><a href="#servicos">IA para Atendimento</a></li>
+                        <li><a href="#servicos">Analytics &amp; Dados</a></li>
+                        <li><a href="#contato">Consultoria em IA</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <a href="mailto:contato@jsltech.com.br">contato@jsltech.com.br</a>
+                    <a href="https://wa.me/5511999999999">WhatsApp</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 JSL Tech. Todos os direitos reservados.</p>
+                <p>Feito com <span class="heart">&#9829;</span> e Inteligência Artificial</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
