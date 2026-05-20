@@ -141,40 +141,21 @@ body {
     margin-bottom: .75rem;
 }
 
-/*
- * mix-blend-mode: screen elimina o fundo escuro da imagem PNG:
- * pixels escuros (fundo) ficam transparentes contra o background do site,
- * enquanto os elementos coloridos do logo (azul/branco) ficam visíveis.
- */
 .logo-img {
     display: block;
     width: auto;
-    mix-blend-mode: screen;
     filter: drop-shadow(0 0 6px rgba(26,111,255,.2));
     transition: filter .3s var(--ease), transform .3s var(--ease);
-    image-rendering: -webkit-optimize-contrast;
 }
 
 .nav-logo:hover .logo-img {
-    filter: drop-shadow(0 0 12px rgba(0,212,255,.5)) brightness(1.1);
+    filter: drop-shadow(0 0 14px rgba(0,212,255,.55)) brightness(1.08);
     transform: scale(1.04);
 }
 
-/* Navbar: altura fixa para caber no header */
-.navbar .logo-img {
-    height: 44px;
-}
-
-/* Navbar compacta ao scrollar */
-.navbar.scrolled .logo-img {
-    height: 36px;
-    transition: height .4s var(--ease), filter .3s var(--ease), transform .3s var(--ease);
-}
-
-/* Footer: um pouco maior */
-.footer-logo .logo-img {
-    height: 54px;
-}
+.navbar .logo-img         { height: 46px; }
+.navbar.scrolled .logo-img { height: 36px; transition: height .4s var(--ease), filter .3s var(--ease), transform .3s var(--ease); }
+.footer-logo .logo-img    { height: 58px; }
 
 /* Nav links */
 .nav-links {
