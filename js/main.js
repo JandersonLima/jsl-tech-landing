@@ -277,6 +277,229 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     });
 })();
 
+/* ─── Modal de Contato ──────────────────────────────────── */
+(function initContactModal() {
+
+    /* ── Referências DOM ── */
+    const overlay      = document.getElementById('modal-overlay');
+    const box          = document.getElementById('modal-box');
+    const btnOpen      = document.getElementById('btn-open-modal');
+    const btnClose     = document.getElementById('modal-close');
+    const form         = document.getElementById('contact-form');
+    const btnSubmit    = document.getElementById('btn-submit');
+    const formState    = document.getElementById('modal-form-state');
+    const successState = document.getElementById('modal-success-state');
+    const btnSuccClose = document.getElementById('btn-success-close');
+    const charCount    = document.getElementById('char-count');
+    const textarea     = document.getElementById('f-desc');
+
+    if (!overlay || !form) return;
+
+    /* ── Sanitização: remove qualquer HTML antes de usar valores ── */
+    function sanitize(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;')
+            .trim();
+    }
+
+    /* ── Rate limiting: máximo 3 envios por 10 minutos (localStorage) ── */
+    const RATE_KEY      = 'jsl_form_attempts';
+    const RATE_LIMIT    = 3;
+    const RATE_WINDOW   = 10 * 60 * 1000; // 10 min em ms
+
+    function getRateData() {
+        try {
+            return JSON.parse(localStorage.getItem(RATE_KEY)) || { count: 0, first: 0 };
+        } catch { return { count: 0, first: 0 }; }
+    }
+
+    function isRateLimited() {
+        const d = getRateData();
+        if (Date.now() - d.first > RATE_WINDOW) return false;
+        return d.count >= RATE_LIMIT;
+    }
+
+    function registerAttempt() {
+        const d = getRateData();
+        const now = Date.now();
+        if (now - d.first > RATE_WINDOW) {
+            localStorage.setItem(RATE_KEY, JSON.stringify({ count: 1, first: now }));
+        } else {
+            localStorage.setItem(RATE_KEY, JSON.stringify({ count: d.count + 1, first: d.first }));
+        }
+    }
+
+    /* ── Regras de validação por campo ── */
+    const rules = {
+        'f-name': {
+            validate: v => v.length >= 3 && v.length <= 100 && /^[A-Za-zÀ-ÿ\s'-]{3,100}$/.test(v),
+            msg: 'Informe seu nome completo (mín. 3 letras, sem números).'
+        },
+        'f-email': {
+            validate: v => v.length <= 100 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
+            msg: 'Informe um e-mail válido (ex: nome@empresa.com.br).'
+        },
+        'f-whatsapp': {
+            validate: v => /^[\d\s\(\)\+\-]{8,20}$/.test(v),
+            msg: 'Informe um número válido (ex: (11) 99999-9999).'
+        },
+        'f-desc': {
+            validate: v => v.length >= 20 && v.length <= 1000,
+            msg: 'Descreva seu desafio (mín. 20, máx. 1000 caracteres).'
+        }
+    };
+
+    function validateField(id) {
+        const input = document.getElementById(id);
+        const errEl = document.getElementById('err-' + id.replace('f-', ''));
+        if (!input || !errEl) return false;
+
+        const val  = input.value.trim();
+        const rule = rules[id];
+        const ok   = rule.validate(val);
+
+        input.classList.toggle('invalid', !ok);
+        input.classList.toggle('valid',    ok);
+        // usa textContent (nunca innerHTML) para evitar XSS
+        errEl.textContent = ok ? '' : rule.msg;
+        return ok;
+    }
+
+    /* ── Contador de caracteres na textarea ── */
+    if (textarea && charCount) {
+        textarea.addEventListener('input', () => {
+            const len = textarea.value.length;
+            charCount.textContent = `${len} / 1000`;
+            charCount.classList.toggle('near-limit', len >= 800 && len < 1000);
+            charCount.classList.toggle('at-limit',   len >= 1000);
+        });
+    }
+
+    /* ── Validação em tempo real (blur) ── */
+    Object.keys(rules).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('blur', () => validateField(id));
+            el.addEventListener('input', () => {
+                if (el.classList.contains('invalid')) validateField(id);
+            });
+        }
+    });
+
+    /* ── Abrir/fechar modal ── */
+    function openModal() {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        // foco acessível no primeiro campo
+        setTimeout(() => {
+            const first = form.querySelector('input:not([tabindex="-1"])');
+            if (first) first.focus();
+        }, 350);
+    }
+
+    function closeModal() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    function resetModal() {
+        form.reset();
+        formState.hidden    = false;
+        successState.hidden = true;
+        form.querySelectorAll('input, textarea').forEach(el => {
+            el.classList.remove('invalid', 'valid');
+        });
+        form.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+        if (charCount) charCount.textContent = '0 / 1000';
+    }
+
+    if (btnOpen)      btnOpen.addEventListener('click', openModal);
+    if (btnClose)     btnClose.addEventListener('click', () => { closeModal(); setTimeout(resetModal, 400); });
+    if (btnSuccClose) btnSuccClose.addEventListener('click', () => { closeModal(); setTimeout(resetModal, 400); });
+
+    // Fecha ao clicar fora do box
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) { closeModal(); setTimeout(resetModal, 400); }
+    });
+
+    // Fecha com Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) {
+            closeModal();
+            setTimeout(resetModal, 400);
+        }
+    });
+
+    /* ── Submit ── */
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        /* 1. Honeypot: se preenchido → bot detectado, rejeita silenciosamente */
+        const hp = document.getElementById('hp-name');
+        if (hp && hp.value.length > 0) {
+            closeModal();
+            return;
+        }
+
+        /* 2. Validar todos os campos */
+        const allOk = Object.keys(rules).every(id => validateField(id));
+        if (!allOk) return;
+
+        /* 3. Rate limiting */
+        if (isRateLimited()) {
+            const errEl = document.getElementById('err-desc');
+            if (errEl) errEl.textContent = 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
+            return;
+        }
+
+        /* 4. Sanitizar valores antes de qualquer uso */
+        const name  = sanitize(document.getElementById('f-name').value);
+        const email = sanitize(document.getElementById('f-email').value);
+        const phone = sanitize(document.getElementById('f-whatsapp').value);
+        const desc  = sanitize(document.getElementById('f-desc').value);
+
+        /* 5. Simular envio (spinner) */
+        btnSubmit.disabled = true;
+        btnSubmit.classList.add('loading');
+        btnSubmit.querySelector('span').textContent = 'Enviando…';
+
+        // Monta mailto: com dados codificados de forma segura via URLSearchParams
+        const body = [
+            `Nome: ${name}`,
+            `E-mail: ${email}`,
+            `WhatsApp: ${phone}`,
+            ``,
+            `Mensagem:`,
+            desc
+        ].join('\n');
+
+        const mailtoUrl = `mailto:contato@jsltech.com.br`
+            + `?subject=${encodeURIComponent('Contato via Site - ' + name)}`
+            + `&body=${encodeURIComponent(body)}`;
+
+        setTimeout(() => {
+            registerAttempt();
+
+            // Abre cliente de e-mail com dados pré-preenchidos
+            window.location.href = mailtoUrl;
+
+            // Exibe tela de sucesso
+            btnSubmit.disabled = false;
+            btnSubmit.classList.remove('loading');
+            btnSubmit.querySelector('span').textContent = 'Enviar mensagem';
+            formState.hidden    = true;
+            successState.hidden = false;
+        }, 1200);
+    });
+
+})();
+
 /* ─── Stagger reveal for service cards ─────────────────── */
 (function initGridStagger() {
     const grid = document.querySelector('.services-grid');
