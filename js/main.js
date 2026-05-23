@@ -449,7 +449,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
         /* 2. Validar todos os campos */
         const allOk = Object.keys(rules).every(id => validateField(id));
-        if (!allOk) return;
+        if (!allOk) {
+            const firstInvalid = form.querySelector('.invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus({ preventScroll: true });
+            }
+            return;
+        }
 
         /* 3. Rate limiting */
         if (isRateLimited()) {
