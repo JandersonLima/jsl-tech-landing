@@ -2,6 +2,15 @@
    JSL Tech — main.js
    ========================================================= */
 
+/* ─── Helpers de segurança ──────────────────────────────── */
+// Garante que um valor lido de atributo HTML seja um número
+// dentro de um intervalo antes de usar em CSS/DOM
+function safeNumber(value, min, max, fallback) {
+    const n = parseFloat(value);
+    if (isNaN(n) || n < min || n > max) return fallback;
+    return n;
+}
+
 /* ─── Particles Canvas ─────────────────────────────────── */
 (function initParticles() {
     const canvas = document.getElementById('particles-canvas');
@@ -9,8 +18,9 @@
     const ctx = canvas.getContext('2d');
 
     let particles = [];
-    let raf;
-    let mouse = { x: -9999, y: -9999 };
+    let raf       = null;
+    let mouse     = { x: -9999, y: -9999 };
+    let hidden    = false;
 
     function resize() {
         canvas.width  = window.innerWidth;
@@ -75,8 +85,15 @@
             }
         }
 
-        raf = requestAnimationFrame(draw);
+        raf = hidden ? null : requestAnimationFrame(draw);
     }
+
+    // Pausa animação quando aba está oculta (Page Visibility API)
+    // evita consumo de CPU e vazamento de RAF quando o usuário troca de aba
+    document.addEventListener('visibilitychange', () => {
+        hidden = document.hidden;
+        if (!hidden && !raf) draw();
+    });
 
     window.addEventListener('resize', () => { resize(); spawn(); });
     document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
@@ -193,9 +210,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
             if (!entry.isIntersecting) return;
             entry.target.classList.add('visible');
 
-            // Animate progress bars inside benefit items
+            // Animate progress bars — data-width validado (0-100) antes de aplicar em CSS
             entry.target.querySelectorAll('.benefit-progress-fill').forEach(bar => {
-                const w = bar.getAttribute('data-width');
+                const w = safeNumber(bar.getAttribute('data-width'), 0, 100, 0);
                 setTimeout(() => { bar.style.width = w + '%'; }, 300);
             });
 
@@ -224,8 +241,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
     const io = new IntersectionObserver(entries => {
         if (!entries[0].isIntersecting) return;
+        // data-target clampado a [0, 100000] antes de usar
         statsEl.querySelectorAll('.stat-number').forEach(el => {
-            countUp(el, parseInt(el.getAttribute('data-target'), 10), 1800);
+            const target = safeNumber(el.getAttribute('data-target'), 0, 100000, 0);
+            countUp(el, target, 1800);
         });
         io.disconnect();
     }, { threshold: .6 });
