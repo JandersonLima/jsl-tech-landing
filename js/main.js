@@ -277,6 +277,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     });
 })();
 
+/* ─── Cliente Supabase ──────────────────────────────────── */
+const _supa = (function () {
+    const URL = 'https://sfkpulzetrgseugvtchj.supabase.co';
+    const KEY = 'sb_publishable_hOsI-tiyDfEvY9x2GUdx4g_PTcvCiOM';
+    return window.supabase ? window.supabase.createClient(URL, KEY) : null;
+})();
+
 /* ─── Modal de Contato ──────────────────────────────────── */
 (function initContactModal() {
 
@@ -471,38 +478,37 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         const phone = sanitize(document.getElementById('f-whatsapp').value);
         const desc  = sanitize(document.getElementById('f-desc').value);
 
-        /* 5. Simular envio (spinner) */
+        /* 5. Enviar ao Supabase */
         btnSubmit.disabled = true;
         btnSubmit.classList.add('loading');
         btnSubmit.querySelector('span').textContent = 'Enviando…';
 
-        // Monta mailto: com dados codificados de forma segura via URLSearchParams
-        const body = [
-            `Nome: ${name}`,
-            `E-mail: ${email}`,
-            `WhatsApp: ${phone}`,
-            ``,
-            `Mensagem:`,
-            desc
-        ].join('\n');
+        (async () => {
+            try {
+                if (!_supa) throw new Error('Cliente Supabase não inicializado.');
 
-        const mailtoUrl = `mailto:contato@jsltech.com.br`
-            + `?subject=${encodeURIComponent('Contato via Site - ' + name)}`
-            + `&body=${encodeURIComponent(body)}`;
+                const { error } = await _supa.from('contatos').insert({
+                    nome:      name,
+                    email:     email,
+                    whatsapp:  phone,
+                    descricao: desc
+                });
 
-        setTimeout(() => {
-            registerAttempt();
+                if (error) throw error;
 
-            // Abre cliente de e-mail com dados pré-preenchidos
-            window.location.href = mailtoUrl;
+                registerAttempt();
+                formState.hidden    = true;
+                successState.hidden = false;
 
-            // Exibe tela de sucesso
-            btnSubmit.disabled = false;
-            btnSubmit.classList.remove('loading');
-            btnSubmit.querySelector('span').textContent = 'Enviar mensagem';
-            formState.hidden    = true;
-            successState.hidden = false;
-        }, 1200);
+            } catch (err) {
+                const errEl = document.getElementById('err-desc');
+                if (errEl) errEl.textContent = 'Erro ao enviar. Tente novamente em instantes.';
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('loading');
+                btnSubmit.querySelector('span').textContent = 'Enviar mensagem';
+            }
+        })();
     });
 
 })();
