@@ -1379,7 +1379,9 @@ section { position: relative; z-index: 1; }
     .nav-links.open { display: flex; }
     .nav-links.open .nav-link { font-size: 1.4rem; }
 
-    .hero { padding: 13rem 1.5rem 4rem; text-align: center; }
+    .hero { padding: 13rem 1.5rem 4rem; text-align: center; overflow: visible; }
+    .hero-inner { margin: 0 auto; overflow: hidden; }
+    .hero-title { overflow-wrap: break-word; }
     .hero-cta { justify-content: center; }
     .hero-stats { justify-content: center; flex-wrap: wrap; gap: 1.5rem; }
     .stat-divider { display: none; }
@@ -1398,7 +1400,7 @@ section { position: relative; z-index: 1; }
 }
 
 @media (max-width: 480px) {
-    .hero-title { font-size: 2.5rem; }
+    .hero-title { font-size: clamp(1.75rem, 7.5vw, 2.2rem); }
     .section-title { font-size: 1.75rem; }
     .cta-title { font-size: 1.75rem; }
     .quote-text { font-size: 1.35rem; }
