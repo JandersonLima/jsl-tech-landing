@@ -296,15 +296,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
     if (!overlay || !form) return;
 
-    /* ── Sanitização: remove qualquer HTML antes de usar valores ── */
+    /* ── Sanitização: trim para dados enviados à API (XSS já é evitado
+          usando textContent em vez de innerHTML em todo o DOM) ── */
     function sanitize(str) {
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#x27;')
-            .trim();
+        return String(str).trim();
     }
 
     /* ── Rate limiting: máximo 3 envios por 10 minutos (localStorage) ── */

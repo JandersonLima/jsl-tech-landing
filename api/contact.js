@@ -11,10 +11,10 @@ const crypto = require('crypto');
 const SUPABASE_URL      = process.env.SUPABASE_URL;
 const SUPABASE_SRK      = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const IP_SALT           = process.env.IP_SALT || 'jsltech-salt';
-const ALLOWED_ORIGIN    = process.env.ALLOWED_ORIGIN || '';   // ex: https://jsltech.com.br
-const RATE_LIMIT        = 3;                                  // tentativas máximas
-const RATE_WINDOW_MS    = 10 * 60 * 1000;                    // janela de 10 min
-const MAX_BODY_BYTES    = 4096;                               // 4 KB
+const ALLOWED_ORIGIN    = process.env.ALLOWED_ORIGIN || '';
+const RATE_LIMIT        = 3;
+const RATE_WINDOW_MS    = 10 * 60 * 1000;
+const MAX_BODY_BYTES    = 4096;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function hashIp(ip) {
@@ -47,6 +47,12 @@ module.exports = async function handler(req, res) {
 
     if (req.method === 'OPTIONS') return res.status(204).end();
     if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+
+    // Validação de variáveis de ambiente obrigatórias
+    if (!SUPABASE_URL || !SUPABASE_SRK) {
+        console.error('[contact] Variáveis de ambiente ausentes: SUPABASE_URL e/ou SUPABASE_SERVICE_ROLE_KEY');
+        return res.status(500).json({ error: 'Configuração do servidor incompleta.' });
+    }
 
     // Content-Type obrigatório
     if (!(req.headers['content-type'] || '').includes('application/json')) {
@@ -81,45 +87,51 @@ module.exports = async function handler(req, res) {
              || 'unknown';
     const ipHash = hashIp(ip);
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SRK);
+    try {
+        const supabase = createClient(SUPABASE_URL, SUPABASE_SRK);
 
-    const { data: rl } = await supabase
-        .from('rate_limits')
-        .select('attempts, window_start')
-        .eq('ip_hash', ipHash)
-        .maybeSingle();
+        const { data: rl } = await supabase
+            .from('rate_limits')
+            .select('attempts, window_start')
+            .eq('ip_hash', ipHash)
+            .maybeSingle();
 
-    if (rl) {
-        const windowAge = Date.now() - new Date(rl.window_start).getTime();
-        if (windowAge < RATE_WINDOW_MS && rl.attempts >= RATE_LIMIT) {
-            return res.status(429).json({ error: 'Muitas tentativas. Aguarde alguns minutos.' });
+        if (rl) {
+            const windowAge = Date.now() - new Date(rl.window_start).getTime();
+            if (windowAge < RATE_WINDOW_MS && rl.attempts >= RATE_LIMIT) {
+                return res.status(429).json({ error: 'Muitas tentativas. Aguarde alguns minutos.' });
+            }
         }
-    }
 
-    // ── Inserção ──────────────────────────────────────────────────────────────
-    const { error: insertErr } = await supabase.from('contatos').insert({
-        nome:      raw.nome,
-        email:     raw.email,
-        whatsapp:  raw.whatsapp,
-        descricao: raw.descricao,
-        ip_origem: ipHash,
-    });
+        // ── Inserção ──────────────────────────────────────────────────────────────
+        const { error: insertErr } = await supabase.from('contatos').insert({
+            nome:      raw.nome,
+            email:     raw.email,
+            whatsapp:  raw.whatsapp,
+            descricao: raw.descricao,
+            ip_origem: ipHash,
+        });
 
-    if (insertErr) {
-        console.error('[contact] insert error:', insertErr.message);
+        if (insertErr) {
+            console.error('[contact] insert error:', insertErr.message);
+            return res.status(500).json({ error: 'Erro interno. Tente novamente.' });
+        }
+
+        // ── Atualiza rate limit ───────────────────────────────────────────────────
+        const now = new Date().toISOString();
+        const windowExpired = !rl || (Date.now() - new Date(rl.window_start).getTime() >= RATE_WINDOW_MS);
+
+        await supabase.from('rate_limits').upsert(
+            windowExpired
+                ? { ip_hash: ipHash, attempts: 1, window_start: now, last_attempt: now }
+                : { ip_hash: ipHash, attempts: (rl.attempts || 0) + 1, window_start: rl.window_start, last_attempt: now },
+            { onConflict: 'ip_hash' }
+        );
+
+        return res.status(200).json({ ok: true });
+
+    } catch (err) {
+        console.error('[contact] unexpected error:', err.message);
         return res.status(500).json({ error: 'Erro interno. Tente novamente.' });
     }
-
-    // ── Atualiza rate limit ───────────────────────────────────────────────────
-    const now = new Date().toISOString();
-    const windowExpired = !rl || (Date.now() - new Date(rl.window_start).getTime() >= RATE_WINDOW_MS);
-
-    await supabase.from('rate_limits').upsert(
-        windowExpired
-            ? { ip_hash: ipHash, attempts: 1, window_start: now, last_attempt: now }
-            : { ip_hash: ipHash, attempts: (rl.attempts || 0) + 1, window_start: rl.window_start, last_attempt: now },
-        { onConflict: 'ip_hash' }
-    );
-
-    return res.status(200).json({ ok: true });
 };
