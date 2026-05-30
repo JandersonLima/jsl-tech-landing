@@ -277,12 +277,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     });
 })();
 
-/* ─── Cliente Supabase ──────────────────────────────────── */
-const _supa = (function () {
-    const URL = 'https://sfkpulzetrgseugvtchj.supabase.co';
-    const KEY = 'sb_publishable_hOsI-tiyDfEvY9x2GUdx4g_PTcvCiOM';
-    return window.supabase ? window.supabase.createClient(URL, KEY) : null;
-})();
 
 /* ─── Modal de Contato ──────────────────────────────────── */
 (function initContactModal() {
@@ -478,23 +472,28 @@ const _supa = (function () {
         const phone = sanitize(document.getElementById('f-whatsapp').value);
         const desc  = sanitize(document.getElementById('f-desc').value);
 
-        /* 5. Enviar ao Supabase */
+        /* 5. Enviar à API serverless */
         btnSubmit.disabled = true;
         btnSubmit.classList.add('loading');
         btnSubmit.querySelector('span').textContent = 'Enviando…';
 
         (async () => {
             try {
-                if (!_supa) throw new Error('Cliente Supabase não inicializado.');
-
-                const { error } = await _supa.from('contatos').insert({
-                    nome:      name,
-                    email:     email,
-                    whatsapp:  phone,
-                    descricao: desc
+                const resp = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome: name, email, whatsapp: phone, descricao: desc }),
                 });
 
-                if (error) throw error;
+                const data = await resp.json().catch(() => ({}));
+
+                if (resp.status === 429) {
+                    const errEl = document.getElementById('err-desc');
+                    if (errEl) errEl.textContent = data.error || 'Muitas tentativas. Aguarde alguns minutos.';
+                    return;
+                }
+
+                if (!resp.ok) throw new Error(data.error || 'Erro desconhecido');
 
                 registerAttempt();
                 formState.hidden    = true;
