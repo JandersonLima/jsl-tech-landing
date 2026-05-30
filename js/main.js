@@ -393,10 +393,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
     /* ── Abrir/fechar modal ── */
     function openModal() {
+        resetModal();
         overlay.classList.add('open');
         overlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        // foco acessível no primeiro campo
         setTimeout(() => {
             const first = form.querySelector('input:not([tabindex="-1"])');
             if (first) first.focus();
@@ -407,6 +407,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         overlay.classList.remove('open');
         overlay.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        resetModal();
     }
 
     function resetModal() {
