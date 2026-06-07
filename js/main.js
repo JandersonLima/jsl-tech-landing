@@ -103,22 +103,6 @@ function safeNumber(value, min, max, fallback) {
     draw();
 })();
 
-/* ─── Custom Cursor ────────────────────────────────────── */
-(function initCursor() {
-    const cur = document.getElementById('cursor');
-    if (!cur || window.innerWidth < 768) return;
-
-    document.addEventListener('mousemove', e => {
-        cur.style.left = e.clientX + 'px';
-        cur.style.top  = e.clientY + 'px';
-    });
-
-    const hoverEls = document.querySelectorAll('a, button, .service-card, .benefit-item, .stack-card');
-    hoverEls.forEach(el => {
-        el.addEventListener('mouseenter', () => cur.classList.add('hovering'));
-        el.addEventListener('mouseleave', () => cur.classList.remove('hovering'));
-    });
-})();
 
 /* ─── Navbar scroll ────────────────────────────────────── */
 (function initNavbar() {
