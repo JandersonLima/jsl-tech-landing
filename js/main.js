@@ -150,22 +150,33 @@ function safeNumber(value, min, max, fallback) {
 (function initMobileMenu() {
     const toggle = document.getElementById('nav-toggle');
     const links  = document.getElementById('nav-links');
+    const nav    = document.getElementById('navbar');
     if (!toggle || !links) return;
 
+    function openMenu() {
+        links.classList.add('open');
+        toggle.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+        // backdrop-filter no navbar cria um containing block que restringe
+        // position:fixed dos filhos — remove enquanto o menu está aberto
+        if (nav) nav.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        links.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        if (nav) nav.classList.remove('menu-open');
+    }
+
     toggle.addEventListener('click', () => {
-        const open = links.classList.toggle('open');
-        toggle.classList.toggle('open', open);
-        toggle.setAttribute('aria-expanded', String(open));
-        document.body.style.overflow = open ? 'hidden' : '';
+        links.classList.contains('open') ? closeMenu() : openMenu();
     });
 
     links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-            links.classList.remove('open');
-            toggle.classList.remove('open');
-            toggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        });
+        a.addEventListener('click', closeMenu);
     });
 })();
 
