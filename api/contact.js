@@ -34,6 +34,14 @@ const RULES = {
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
+    // Log diagnóstico — mostra apenas prefixo das vars (nunca o valor completo)
+    console.log('[contact] env:', {
+        url_ok:  !!SUPABASE_URL,
+        url_prefix: SUPABASE_URL  ? SUPABASE_URL.slice(0, 20)  : 'MISSING',
+        key_ok:  !!SUPABASE_SRK,
+        key_prefix: SUPABASE_SRK ? SUPABASE_SRK.slice(0, 10) : 'MISSING',
+    });
+
     // Security headers
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'DENY');
