@@ -106,30 +106,17 @@ function safeNumber(value, min, max, fallback) {
 /* ─── Custom Cursor ────────────────────────────────────── */
 (function initCursor() {
     const cur = document.getElementById('cursor');
-    const fol = document.getElementById('cursor-follower');
-    if (!cur || !fol || window.innerWidth < 768) return;
-
-    let mx = 0, my = 0, fx = 0, fy = 0;
+    if (!cur || window.innerWidth < 768) return;
 
     document.addEventListener('mousemove', e => {
-        mx = e.clientX;
-        my = e.clientY;
-        cur.style.left = mx + 'px';
-        cur.style.top  = my + 'px';
+        cur.style.left = e.clientX + 'px';
+        cur.style.top  = e.clientY + 'px';
     });
-
-    (function animateFol() {
-        fx += (mx - fx) * .12;
-        fy += (my - fy) * .12;
-        fol.style.left = fx + 'px';
-        fol.style.top  = fy + 'px';
-        requestAnimationFrame(animateFol);
-    })();
 
     const hoverEls = document.querySelectorAll('a, button, .service-card, .benefit-item, .stack-card');
     hoverEls.forEach(el => {
-        el.addEventListener('mouseenter', () => { cur.classList.add('hovering'); fol.classList.add('hovering'); });
-        el.addEventListener('mouseleave', () => { cur.classList.remove('hovering'); fol.classList.remove('hovering'); });
+        el.addEventListener('mouseenter', () => cur.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cur.classList.remove('hovering'));
     });
 })();
 
